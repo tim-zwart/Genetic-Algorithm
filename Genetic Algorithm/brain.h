@@ -9,12 +9,15 @@ using namespace std;
 class Brain
 {
     public:
+        static int cBrains;
+
         vector <vec> directions;
-        Brain* mutate();
-        Brain* clone();
+        Brain* mutate() const;
+        Brain* clone() const;
 
         Brain();
         Brain(int nDir);
+        ~Brain();
 };
 
 #endif // BRAIN_H_INCLUDED

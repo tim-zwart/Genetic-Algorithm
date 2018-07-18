@@ -1,8 +1,12 @@
 #include "dot.h"
 #include "windows.h"
 
+int Dot::cDots = 0;
+
 Dot::Dot(int nDir, vec start)
 {
+    Dot::cDots++;
+
     fitness = 0;
     brain = new Brain(nDir);
     pos = start;
@@ -13,6 +17,8 @@ Dot::Dot(int nDir, vec start)
 
 Dot::Dot(vec start)
 {
+    Dot::cDots++;
+
     fitness = 0;
     brain = NULL;
     pos = start;
@@ -23,18 +29,20 @@ Dot::Dot(vec start)
 
 Dot::Dot()
 {
+    Dot::cDots++;
     brain = NULL;
     graphic = (SDL_Surface*)defaultGraphic;
 }
 
 Dot::~Dot()
 {
+    Dot::cDots--;
     if(brain != NULL)
     {
         delete brain;
     }
-    delete defaultGraphic;
-    delete bestGraphic;
+    SDL_FreeSurface(defaultGraphic);
+    SDL_FreeSurface(bestGraphic);
 }
 
 Dot& Dot::operator=(const Dot &d)
@@ -98,6 +106,12 @@ void Dot::update(SDL_Surface* screen, box goal)
     {
         return;
     }
+    if(reachedGoal)
+    {
+        coord c = pos.convert();
+        image(c.x-graphic->w/2, c.y+graphic->h/2, (SDL_Surface*)graphic, screen);
+        return;
+    }
 
     move();
 
@@ -117,10 +131,6 @@ void Dot::update(SDL_Surface* screen, box goal)
         bool bottom = pos.convert().y - floor(graphic->h/2) >= goal.bl.y;
         reachedGoal =  left && right && bottom;
         dead = reachedGoal;
-        if(reachedGoal)
-        {
-            fitness = pow(brain->directions.size() - instruct_step, 2);
-        }
     }
 
     if(dead && !wasDead)
@@ -138,12 +148,19 @@ void Dot::update(SDL_Surface* screen, box goal)
     //image(c.x-graphic->w/2, c.y+graphic->h/2, (SDL_Surface*)defaultGraphic, screen);
 }
 
-void Dot::calculateFitness(box goal)
+void Dot::calculateFitness(box goal, int minFit)
 {
     coord g = convertC((goal.bl.x+goal.tr.x)/2,(goal.bl.y+goal.tr.y)/2);
     coord p = pos.convert();
     double distance = sqrt(pow(g.x-p.x, 2) + pow(g.y-p.y, 2));
-    fitness += 1/pow(distance, 2);
+    if(!reachedGoal)
+    {
+        fitness = 1/pow(distance, 2);
+    }
+    else
+    {
+        fitness = pow(brain->directions.size() - instruct_step, 2);
+    }
 }
 
 Dot Dot::mutate(vec start)

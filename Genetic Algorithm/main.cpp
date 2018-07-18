@@ -49,7 +49,10 @@ int main( int argc, char* args[] )
     goalLoc.bl = convertC(320-floor(goal->w/2), 480-goal->h);
     goalLoc.tr = convertC(320+floor(goal->w/2), 480);
     #endif
+
     image(goalL.x, goalL.y, goal, background);
+
+    SDL_FreeSurface(goal);
 
     Population pop(1000 ,convertC(320, 3).convert());
 
@@ -67,6 +70,7 @@ int main( int argc, char* args[] )
 
         if(pop.allDead())
         {
+            int dots = Brain::cBrains;
             pop.naturalSelection(goalLoc);
             pop.update(screen, goalLoc);
         }
@@ -78,6 +82,9 @@ int main( int argc, char* args[] )
 
         Sleep(5);
     }
+
+    SDL_FreeSurface(screen);
+    SDL_FreeSurface(background);
 
     return 0;
 }

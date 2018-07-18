@@ -32,7 +32,7 @@ void Population::calculateFitness(box goal)
 
     for(int i=0; i<n - (gen==0); i++)
     {
-        dots[i].calculateFitness(goal);
+        dots[i].calculateFitness(goal, 0);
         fitnessSum += dots[i].fitness;
         if(dots[i].fitness > dots[best].fitness)
         {

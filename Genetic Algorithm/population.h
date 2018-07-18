@@ -17,8 +17,6 @@ public:
 private:
     vec loc;
     int n;
-    vector <Dot> dotss;
-    vector <Dot> newDotss;
     Dot* dots;
     Dot* newDots;
     double fitnessSum;
