@@ -4,13 +4,7 @@
 Dot::Dot(int nDir, vec start)
 {
     fitness = 0;
-    //brain = new Brain(nDir);
-    Brain b(nDir);
-    brain = b;/*
-    int i = brain->directions.size();
-    vec v = brain->directions[0];*/
-    int i = brain.directions.size();
-    vec v = brain.directions[0];
+    brain = new Brain(nDir);
     pos = start;
     v.magnitude = 0;
     v.direction = 0;
@@ -20,7 +14,7 @@ Dot::Dot(int nDir, vec start)
 Dot::Dot(vec start)
 {
     fitness = 0;
-    //brain = NULL;
+    brain = NULL;
     pos = start;
     v.magnitude = 0;
     v.direction = 0;
@@ -29,16 +23,16 @@ Dot::Dot(vec start)
 
 Dot::Dot()
 {
-    //brain = NULL;
+    brain = NULL;
     graphic = (SDL_Surface*)defaultGraphic;
 }
 
 Dot::~Dot()
 {
-    /*if(brain != NULL)
+    if(brain != NULL)
     {
         delete brain;
-    }*/
+    }
     delete defaultGraphic;
     delete bestGraphic;
 }
@@ -48,13 +42,19 @@ Dot& Dot::operator=(const Dot &d)
     reachedGoal = d.reachedGoal;
     dead = d.dead;
     instruct_step = d.instruct_step;
-    /*if(brain != NULL)
+    if(brain != NULL)
     {
         delete brain;
-    }*/
-    graphic = d.graphic;
-    //brain = d.brain->clone();
-    brain = d.brain;
+    }
+    if(d.graphic == d.defaultGraphic)
+    {
+        graphic = (SDL_Surface*)defaultGraphic;
+    }
+    else
+    {
+        graphic = (SDL_Surface*)bestGraphic;
+    }
+    brain = d.brain->clone();
     pos = d.pos;
     v = d.v;
     mass = d.mass;
@@ -63,16 +63,25 @@ Dot& Dot::operator=(const Dot &d)
     return *this;
 }
 
+void Dot::reCreate(int nDir, vec start)
+{
+    fitness = 0;
+    brain = new Brain(nDir);
+    pos = start;
+    v.magnitude = 0;
+    v.direction = 0;
+    graphic = (SDL_Surface*)defaultGraphic;
+}
+
 void Dot::move()
 {
     if(dead)
     {
         return;
     }
-    int i = brain.directions.size();
-    if(instruct_step < (int)brain.directions.size())
+    if(instruct_step < (int)brain->directions.size())
     {
-        v = v + brain.directions[instruct_step];
+        v = v + brain->directions[instruct_step];
         v.magnitude = min(v.magnitude, (double)3);
         pos = pos + v;
         instruct_step++;
@@ -84,11 +93,11 @@ void Dot::move()
 }
 
 void Dot::update(SDL_Surface* screen, box goal)
-{/*
+{
     if(brain == NULL)
     {
         return;
-    }*/
+    }
 
     move();
 
@@ -110,7 +119,7 @@ void Dot::update(SDL_Surface* screen, box goal)
         dead = reachedGoal;
         if(reachedGoal)
         {
-            fitness = (brain.directions.size() - instruct_step);
+            fitness = pow(brain->directions.size() - instruct_step, 2);
         }
     }
 
@@ -126,6 +135,7 @@ void Dot::update(SDL_Surface* screen, box goal)
     }
 
     image(c.x-graphic->w/2, c.y+graphic->h/2, (SDL_Surface*)graphic, screen);
+    //image(c.x-graphic->w/2, c.y+graphic->h/2, (SDL_Surface*)defaultGraphic, screen);
 }
 
 void Dot::calculateFitness(box goal)
@@ -139,8 +149,7 @@ void Dot::calculateFitness(box goal)
 Dot Dot::mutate(vec start)
 {
     Dot baby(start);
-    //Brain* b = brain->mutate();
-    Brain b = brain.mutate();
+    Brain* b = brain->mutate();
     baby.brain = b;
     return baby;
 }
@@ -148,8 +157,8 @@ Dot Dot::mutate(vec start)
 Dot Dot::clone(vec start)
 {
     Dot baby(start);
-    //Brain* b = brain->clone();
-    baby.brain = brain;
+    Brain* b = brain->clone();
+    baby.brain = b;
     return baby;
 }
 

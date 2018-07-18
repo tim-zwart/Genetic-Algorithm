@@ -9,11 +9,9 @@ using namespace std;
 class Brain
 {
     public:
-        vector <vec> directions;/*
+        vector <vec> directions;
         Brain* mutate();
-        Brain* clone();*/
-        Brain mutate();
-        Brain clone();
+        Brain* clone();
 
         Brain();
         Brain(int nDir);

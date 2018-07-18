@@ -1,34 +1,34 @@
 # depslib dependency file v1.0
-1531589856 source:c:\users\tim\documents\programming projects\neural networks\genetic algorithm\main.cpp
+1531881282 source:c:\users\tim\documents\programming projects\neural networks\genetic algorithm\main.cpp
 	"libraries.h"
 	"framework.h"
 	"dot.h"
 	"brain.h"
 	"population.h"
 
-1531680334 c:\users\tim\documents\programming projects\neural networks\genetic algorithm\dot.h
+1531880373 c:\users\tim\documents\programming projects\neural networks\genetic algorithm\dot.h
 	"libraries.h"
 	"STL_Basic.h"
 	"brain.h"
 	"framework.h"
 
-1531691477 source:c:\users\tim\documents\programming projects\neural networks\genetic algorithm\dot.cpp
+1531881025 source:c:\users\tim\documents\programming projects\neural networks\genetic algorithm\dot.cpp
 	"dot.h"
 	"windows.h"
 
 1530983831 c:\users\tim\documents\programming projects\neural networks\genetic algorithm\stl_basic.h
 	"libraries.h"
 
-1530983963 source:c:\users\tim\documents\programming projects\neural networks\genetic algorithm\stl_basic.cpp
+1531878879 source:c:\users\tim\documents\programming projects\neural networks\genetic algorithm\stl_basic.cpp
 	"SDL/SDL.h"
 	"SDL/SDL_image.h"
 	<string>
 	"STL_Basic.h"
 
-1531680660 source:c:\users\tim\documents\programming projects\neural networks\genetic algorithm\brain.cpp
+1531802578 source:c:\users\tim\documents\programming projects\neural networks\genetic algorithm\brain.cpp
 	"brain.h"
 
-1531680563 c:\users\tim\documents\programming projects\neural networks\genetic algorithm\brain.h
+1531802578 c:\users\tim\documents\programming projects\neural networks\genetic algorithm\brain.h
 	"libraries.h"
 	"framework.h"
 
@@ -49,7 +49,7 @@
 1531106810 source:c:\users\tim\documents\programming projects\neural networks\genetic algorithm\framework.cpp
 	"framework.h"
 
-1531620297 source:c:\users\tim\documents\programming projects\neural networks\genetic algorithm\population.cpp
+1531880374 source:c:\users\tim\documents\programming projects\neural networks\genetic algorithm\population.cpp
 	"population.h"
 
 1531614816 c:\users\tim\documents\programming projects\neural networks\genetic algorithm\population.h

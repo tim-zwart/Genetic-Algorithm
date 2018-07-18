@@ -76,7 +76,7 @@ int main( int argc, char* args[] )
         }
         SDL_Flip(screen);
 
-        Sleep(10);
+        Sleep(5);
     }
 
     return 0;

@@ -17,6 +17,7 @@ public:
 
 private:
     // Member functions
+    void reCreate(int nDir, vec start);
     void move();
     void update(SDL_Surface* screen, box goal);
     Dot mutate(vec start);
@@ -33,8 +34,7 @@ private:
     bool dead = false;
 
     // Generally static member variables
-    //Brain* brain;
-    Brain brain;
+    Brain* brain;
 
     SDL_Surface* graphic;
     const SDL_Surface* defaultGraphic = loadImage("box.png");
