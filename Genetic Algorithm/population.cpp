@@ -2,7 +2,7 @@
 
 Population::Population(int nDots, vec start)
 {
-    gen=0;
+    gen=1;
     n = nDots;
     loc = start;
     dots = new Dot[n];
@@ -18,11 +18,6 @@ void Population::update(SDL_Surface* screen, box goal)
     {
         dots[i].update(screen, goal);
     }
-    //int s = prev.size();
-    //for(int i=0; i<((int)prev.size())-1; i++)
-   // {
-     //   prev[i].update(screen, goal);
-   // }
 }
 
 void Population::calculateFitness(box goal)
@@ -30,7 +25,7 @@ void Population::calculateFitness(box goal)
     int best=0;
     fitnessSum = 0;
 
-    for(int i=0; i<n - (gen==0); i++)
+    for(int i=0; i<n - (gen==1); i++)
     {
         dots[i].calculateFitness(goal, 0);
         fitnessSum += dots[i].fitness;
@@ -39,21 +34,21 @@ void Population::calculateFitness(box goal)
             best = i;
         }
     }
-    #define prev 0
-    #if prev
-    for(int i=0;i<prev.size();i++)
-    {
-        prev[i] = prev[i].clone(loc);
-        prev[i].graphic = prev[i].bestGraphic;
-    }
-    prev.push_back(dots[best].clone(loc));
-    prev[prev.size()-1].graphic = prev[prev.size()-1].bestGraphic;
-    #endif
     newDots[n-1] = dots[best].clone(loc);
     newDots[n-1].graphic = (SDL_Surface*)newDots[n-1].bestGraphic;
+
+    // Output results about past generation
+    if(!dots[best].reachedGoal)
+    {
+        cout << "Distance from goal: " << pow(dots[best].fitness, -0.5) << endl << endl;
+    }
+    else
+    {
+        cout << "Number of steps taken to reach goal: " << dots[best].instruct_step << endl << endl;
+    }
 }
 
-bool Population::allDead()
+bool Population::allDead() const
 {
     for(int i=0; i<n; i++)
     {
@@ -67,13 +62,14 @@ bool Population::allDead()
 
 void Population::naturalSelection(box goal)
 {
+    cout << "Generation " << gen << endl;
     if(gen==0)
     {
         n++;
     }
     newDots = new Dot[n];
     calculateFitness(goal);
-    gen++;
+
     for(int i=0;i<n-1;i++)
     {
         double r = random(fitnessSum);
@@ -89,4 +85,5 @@ void Population::naturalSelection(box goal)
     delete[] dots;
     dots = newDots;
     newDots = NULL;
+    gen++;
 }

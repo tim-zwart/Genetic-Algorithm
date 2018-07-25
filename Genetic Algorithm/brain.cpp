@@ -24,8 +24,8 @@ Brain::~Brain()
 Brain* Brain::mutate() const
 {
     Brain* b = new Brain();
-    const double mutateRate = 0.05;
-    for(int i=0;i<directions.size();i++)
+    const double mutateRate = 0.01;
+    for(int i=0;i<(int)directions.size();i++)
     {
         double r = random(1.0);
         if(r <= mutateRate)

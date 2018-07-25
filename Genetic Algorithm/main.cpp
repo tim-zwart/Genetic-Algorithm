@@ -6,6 +6,7 @@
 
 using namespace std;
 
+// Display window constants
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 const int SCREEN_BPP = 32;
@@ -13,13 +14,17 @@ SDL_Event event;
 
 int main( int argc, char* args[] )
 {
-    srand(time(NULL));
-
+    // Set up SDL
     bool quit = false;
 
     SDL_Surface* screen = init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, "Genetic Algorithm");
     SDL_Surface* background = NULL;
     SDL_Surface* goal = NULL;
+
+    // Counter SDL's redirection of outputs to / inputs from the console
+    freopen ("CON", "w", stdout);
+    freopen ("CON", "r", stdin);
+    freopen ("CON", "w", stderr);
 
     if(screen == NULL)
     {
@@ -35,26 +40,24 @@ int main( int argc, char* args[] )
     {
         return 1;
     }
-    int g = goal->h;
-    int generation=0;
-    #define tl 0
-    #if tl
+#define tl 0
+#if tl
     coord goalL = convertC(0, 480);
     box goalLoc;
     goalLoc.bl = convertC(0, 480-goal->h);
     goalLoc.tr = convertC(goal->w, 480);
-    #else
+#else
     coord goalL = convertC(320-floor(goal->w/2+1), 480);
     box goalLoc;
     goalLoc.bl = convertC(320-floor(goal->w/2), 480-goal->h);
     goalLoc.tr = convertC(320+floor(goal->w/2), 480);
-    #endif
+#endif
 
     image(goalL.x, goalL.y, goal, background);
 
     SDL_FreeSurface(goal);
 
-    Population pop(1000 ,convertC(320, 3).convert());
+    Population pop(1000,convertC(320, 3).convert());
 
     while(!quit)
     {
@@ -70,7 +73,6 @@ int main( int argc, char* args[] )
 
         if(pop.allDead())
         {
-            int dots = Brain::cBrains;
             pop.naturalSelection(goalLoc);
             pop.update(screen, goalLoc);
         }
@@ -79,8 +81,6 @@ int main( int argc, char* args[] )
             pop.update(screen, goalLoc);
         }
         SDL_Flip(screen);
-
-        Sleep(5);
     }
 
     SDL_FreeSurface(screen);

@@ -2,7 +2,7 @@
 #define DOT_H_INCLUDED
 
 #include "libraries.h"
-#include "STL_Basic.h"
+#include "SDL_Basic.h"
 #include "brain.h"
 #include "framework.h"
 
@@ -22,8 +22,8 @@ private:
     void reCreate(int nDir, vec start);
     void move();
     void update(SDL_Surface* screen, box goal);
-    Dot mutate(vec start);
-    Dot clone(vec start);
+    Dot mutate(vec start) const;
+    Dot clone(vec start) const;
     void calculateFitness(box goal, int minGoal);
 
     // Dynamic member variables

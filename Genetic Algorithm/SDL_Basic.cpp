@@ -1,7 +1,7 @@
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
 #include <string>
-#include "STL_Basic.h"
+#include "SDL_Basic.h"
 
 SDL_Surface* loadImage(std::string filename)
 {

@@ -8,20 +8,23 @@
 class Population
 {
 public:
+    // Non const functions
     Population(int nInstruct, vec start);
     void update(SDL_Surface* screen, box goal);
     void calculateFitness(box goal);
-    bool allDead();
     void naturalSelection(box goal);
+    void outGenResults(ofstream file);
+
+    // const functions
+    bool allDead() const;
 
 private:
-    vec loc;
-    int n;
+    vec loc; // Starting location
+    int n; // Number of dots
     Dot* dots;
     Dot* newDots;
-    double fitnessSum;
-    vector <Dot> prev;
-    int gen;
+    double fitnessSum; // Total fitness of all dots
+    int gen; // Current generation
 };
 
 #endif // POPULATION_H_INCLUDED

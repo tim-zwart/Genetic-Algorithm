@@ -163,7 +163,7 @@ void Dot::calculateFitness(box goal, int minFit)
     }
 }
 
-Dot Dot::mutate(vec start)
+Dot Dot::mutate(vec start) const
 {
     Dot baby(start);
     Brain* b = brain->mutate();
@@ -171,7 +171,7 @@ Dot Dot::mutate(vec start)
     return baby;
 }
 
-Dot Dot::clone(vec start)
+Dot Dot::clone(vec start) const
 {
     Dot baby(start);
     Brain* b = brain->clone();
