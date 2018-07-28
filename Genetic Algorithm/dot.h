@@ -11,19 +11,19 @@ class Dot
 public:
     static int cDots;
 
-    Dot(int nDir, vec start);
-    Dot(vec start);
+    Dot(int nDir, vec start, SDL_Surface* image);
+    Dot(vec start, SDL_Surface* image);
     Dot();
     ~Dot();
     Dot& operator=(const Dot &d);
 
 private:
     // Member functions
-    void reCreate(int nDir, vec start);
+    void reCreate(int nDir, vec start, SDL_Surface* image);
     void move();
     void update(SDL_Surface* screen, box goal);
-    Dot mutate(vec start) const;
-    Dot clone(vec start) const;
+    Dot mutate(vec start, SDL_Surface* image) const;
+    Dot clone(vec start, SDL_Surface* image) const;
     void calculateFitness(box goal, int minGoal);
 
     // Dynamic member variables
@@ -39,8 +39,6 @@ private:
     const Brain* brain;
 
     SDL_Surface* graphic;
-    SDL_Surface* const defaultGraphic = loadImage("box.png");
-    SDL_Surface* const bestGraphic = loadImage("best_box.png");
 
     // Friends
     friend class Population;

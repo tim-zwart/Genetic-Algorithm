@@ -57,7 +57,7 @@
 	"framework.h"
 	"dot.h"
 
-1532480685 source:c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\brain.cpp
+1532754356 source:c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\brain.cpp
 	"brain.h"
 
 1531952267 c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\brain.h
@@ -78,11 +78,11 @@
 1532754148 c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\framework.h
 	"libraries.h"
 
-1531961848 source:c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\dot.cpp
+1532812922 source:c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\dot.cpp
 	"dot.h"
 	"windows.h"
 
-1532396637 c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\dot.h
+1532812922 c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\dot.h
 	"libraries.h"
 	"SDL_Basic.h"
 	"brain.h"
@@ -101,12 +101,12 @@
 	"brain.h"
 	"population.h"
 
-1532384758 c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\population.h
+1532812380 c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\population.h
 	"libraries.h"
 	"framework.h"
 	"dot.h"
 
-1532402712 source:c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\population.cpp
+1532812592 source:c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\population.cpp
 	"population.h"
 
 1531878879 source:c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\stl_basic.cpp

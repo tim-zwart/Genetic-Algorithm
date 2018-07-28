@@ -8,7 +8,7 @@ Population::Population(int nDots, vec start)
     dots = new Dot[n];
     for(int i=0;i<n;i++)
     {
-        dots[i].reCreate(400, start);
+        dots[i].reCreate(400, start, defaultGraphic);
     }
 }
 
@@ -34,8 +34,7 @@ void Population::calculateFitness(box goal)
             best = i;
         }
     }
-    newDots[n-1] = dots[best].clone(loc);
-    newDots[n-1].graphic = (SDL_Surface*)newDots[n-1].bestGraphic;
+    newDots[n-1] = dots[best].clone(loc, bestGraphic);
 
     // Output results about past generation
     if(!dots[best].reachedGoal)
@@ -80,7 +79,7 @@ void Population::naturalSelection(box goal)
             num -= dots[j].fitness;
             j++;
         }
-        newDots[i] = dots[j-1].mutate(loc);
+        newDots[i] = dots[j-1].mutate(loc, defaultGraphic);
     }
     delete[] dots;
     dots = newDots;

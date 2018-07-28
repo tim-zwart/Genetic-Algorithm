@@ -3,7 +3,7 @@
 
 int Dot::cDots = 0;
 
-Dot::Dot(int nDir, vec start)
+Dot::Dot(int nDir, vec start, SDL_Surface* image)
 {
     Dot::cDots++;
 
@@ -12,10 +12,10 @@ Dot::Dot(int nDir, vec start)
     pos = start;
     v.magnitude = 0;
     v.direction = 0;
-    graphic = (SDL_Surface*)defaultGraphic;
+    graphic = image;
 }
 
-Dot::Dot(vec start)
+Dot::Dot(vec start, SDL_Surface* image)
 {
     Dot::cDots++;
 
@@ -24,14 +24,13 @@ Dot::Dot(vec start)
     pos = start;
     v.magnitude = 0;
     v.direction = 0;
-    graphic = (SDL_Surface*)defaultGraphic;
+    graphic = image;
 }
 
 Dot::Dot()
 {
     Dot::cDots++;
     brain = NULL;
-    graphic = (SDL_Surface*)defaultGraphic;
 }
 
 Dot::~Dot()
@@ -41,8 +40,6 @@ Dot::~Dot()
     {
         delete brain;
     }
-    SDL_FreeSurface(defaultGraphic);
-    SDL_FreeSurface(bestGraphic);
 }
 
 Dot& Dot::operator=(const Dot &d)
@@ -54,15 +51,8 @@ Dot& Dot::operator=(const Dot &d)
     {
         delete brain;
     }
-    if(d.graphic == d.defaultGraphic)
-    {
-        graphic = (SDL_Surface*)defaultGraphic;
-    }
-    else
-    {
-        graphic = (SDL_Surface*)bestGraphic;
-    }
     brain = d.brain->clone();
+    graphic = d.graphic;
     pos = d.pos;
     v = d.v;
     mass = d.mass;
@@ -71,14 +61,14 @@ Dot& Dot::operator=(const Dot &d)
     return *this;
 }
 
-void Dot::reCreate(int nDir, vec start)
+void Dot::reCreate(int nDir, vec start, SDL_Surface* image)
 {
     fitness = 0;
     brain = new Brain(nDir);
     pos = start;
     v.magnitude = 0;
     v.direction = 0;
-    graphic = (SDL_Surface*)defaultGraphic;
+    graphic = image;
 }
 
 void Dot::move()
@@ -163,17 +153,17 @@ void Dot::calculateFitness(box goal, int minFit)
     }
 }
 
-Dot Dot::mutate(vec start) const
+Dot Dot::mutate(vec start, SDL_Surface* image) const
 {
-    Dot baby(start);
+    Dot baby(start, image);
     Brain* b = brain->mutate();
     baby.brain = b;
     return baby;
 }
 
-Dot Dot::clone(vec start) const
+Dot Dot::clone(vec start, SDL_Surface* image) const
 {
-    Dot baby(start);
+    Dot baby(start, image);
     Brain* b = brain->clone();
     baby.brain = b;
     return baby;

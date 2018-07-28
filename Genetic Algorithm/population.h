@@ -25,6 +25,8 @@ private:
     Dot* newDots;
     double fitnessSum; // Total fitness of all dots
     int gen; // Current generation
+    SDL_Surface* const defaultGraphic = loadImage("box.png");
+    SDL_Surface* const bestGraphic = loadImage("best_box.png");
 };
 
 #endif // POPULATION_H_INCLUDED
