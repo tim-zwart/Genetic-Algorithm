@@ -98,3 +98,15 @@ double random(double min, double max)
 
     return dist(mt);
 }
+
+double randBell(double min, double max)
+{
+    double n = max+1;
+    while(n>max || n<min)
+    {
+        normal_distribution<double> dist(5, 1.0);
+        n = dist(mt) / 10 * (max-min) + min;
+    }
+
+    return n;
+}

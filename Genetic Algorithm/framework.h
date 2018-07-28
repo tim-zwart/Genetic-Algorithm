@@ -36,5 +36,6 @@ coord convertC(int x, int y);
 
 double random(double max);
 double random(double min, double max);
+double randBell(double min, double max);
 
 #endif // FRAMEWORK_H_INCLUDED

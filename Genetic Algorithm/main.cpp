@@ -14,6 +14,8 @@ SDL_Event event;
 
 int main( int argc, char* args[] )
 {
+    srand(time(NULL));
+
     // Set up SDL
     bool quit = false;
 

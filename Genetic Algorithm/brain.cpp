@@ -31,7 +31,8 @@ Brain* Brain::mutate() const
         if(r <= mutateRate)
         {
             vec v;
-            v.direction = random(2*M_PI);
+            //v.direction = random(2*M_PI);
+            v.direction = randBell(-M_PI, M_PI) + directions[i].direction;
             v.magnitude = 0.1;
             b->directions.push_back(v);
         }

@@ -57,14 +57,14 @@
 	"framework.h"
 	"dot.h"
 
-1532384564 source:c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\brain.cpp
+1532480685 source:c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\brain.cpp
 	"brain.h"
 
 1531952267 c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\brain.h
 	"libraries.h"
 	"framework.h"
 
-1532401999 c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\libraries.h
+1532481552 c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\libraries.h
 	"windows.h"
 	"SDL/SDL.h"
 	"SDL/SDL_image.h"
@@ -75,7 +75,7 @@
 	<vector>
 	<random>
 
-1531100683 c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\framework.h
+1532754148 c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\framework.h
 	"libraries.h"
 
 1531961848 source:c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\dot.cpp
@@ -91,10 +91,10 @@
 1530983831 c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\stl_basic.h
 	"libraries.h"
 
-1531106810 source:c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\framework.cpp
+1532754148 source:c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\framework.cpp
 	"framework.h"
 
-1532402981 source:c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\main.cpp
+1532557077 source:c:\users\tim\documents\github\genetic-algorithm\genetic algorithm\main.cpp
 	"libraries.h"
 	"framework.h"
 	"dot.h"
