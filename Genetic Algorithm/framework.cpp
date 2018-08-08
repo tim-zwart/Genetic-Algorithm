@@ -5,62 +5,54 @@ using namespace std;
 random_device rd;
 mt19937 mt(time(NULL));
 
-vec convert(coord c)
-{
-    vec v;
-    v.magnitude=sqrt(pow(c.x,2) + pow(c.y,2));
-    v.direction=atan2(c.y, c.x);
-    return v;
-}
-
 vec convert(double magnitude, double direction)
 {
     vec v;
-    v.direction=direction;
-    v.magnitude=magnitude;
+    v.x = magnitude*cos(direction);
+    v.y = magnitude*sin(direction);
     return v;
 }
 
 vec vec::operator+(const vec& v)
 {
-    double x = this->magnitude*cos(this->direction) + v.magnitude*cos(v.direction);
-    double y = this->magnitude*sin(this->direction) + v.magnitude*sin(v.direction);
-
     vec result;
-
-    result.magnitude = sqrt(pow(x,2) + pow(y,2));
-    result.direction = atan2(y, x);
-
+    result.x = this->x + v.x;
+    result.y = this->y + v.y;
     return result;
 }
 
 vec vec::operator-() const
 {
     vec v;
-    v.magnitude = this->magnitude*(-1);
-    v.direction = this->direction;
-
+    v.x = -this->x;
+    v.y = -this->y;
     return v;
 }
 
-vec vec::operator*(int i)
+vec vec::operator*(double num)
 {
     vec v;
-    v.magnitude = this->magnitude*i;
-    v.direction = this->direction;
-
+    v.x = this->x*num;
+    v.y = this->y*num;
     return v;
 }
 
-vec operator*(int i, const vec& v)
+vec operator*(double num, const vec& v)
 {
-    vec vec;
-    vec.magnitude = v.magnitude*i;
-    vec.direction = v.direction;
-
-    return vec;
+    vec result;
+    result.x = v.x*num;
+    result.y = v.y*num;
+    return result;
 }
 
+vec vec::operator*=(const double& num)
+{
+    vec result;
+    result.x = x*num;
+    result.y = y*num;
+    return result;
+}
+/*
 coord vec::convert()
 {
     coord c;
@@ -69,7 +61,7 @@ coord vec::convert()
 
     return c;
 }
-
+*//*
 vec coord::convert()
 {
     vec v;
@@ -78,18 +70,13 @@ vec coord::convert()
 
     return v;
 }
-
-coord convertC(int x, int y)
+*/
+vec convertC(int x, int y)
 {
-    coord c;
-    c.x = x;
-    c.y = y;
-    return c;
-}
-
-double random(double max)
-{
-    return random(0, max);
+    vec v;
+    v.x = x;
+    v.y = y;
+    return v;
 }
 
 double random(double min, double max)

@@ -7,7 +7,8 @@ Brain::Brain(int nDir)
     cBrains++;
     for(int i=0;i<nDir;i++)
     {
-        directions.push_back(convert(0.1, random(2*M_PI)));
+        directions.push_back(convert(0.1, random(0, 2*M_PI)));
+        //directions.push_back(convert(0.1, M_PI_2));
     }
 }
 
@@ -24,16 +25,22 @@ Brain::~Brain()
 Brain* Brain::mutate() const
 {
     Brain* b = new Brain();
+    b->directions.reserve(directions.size());
     const double mutateRate = 0.01;
     for(int i=0;i<(int)directions.size();i++)
     {
-        double r = random(1.0);
-        if(r <= mutateRate)
+        double r = random(0.0, 1.0);
+        if(r <= mutateRate /*+ pow(i, 0.1)/directions.size()*/)
         {
             vec v;
-            //v.direction = random(2*M_PI);
-            v.direction = randBell(-M_PI, M_PI) + directions[i].direction;
-            v.magnitude = 0.1;
+
+            double mag = sqrt(pow(directions[i].x,2) + pow(directions[i].y,2));
+            double dir = atan2(directions[i].y, directions[i].x) + randBell(-M_PI, M_PI);
+            //double dir = random(0, 2*M_PI);
+
+            v.x = mag*cos(dir);
+            v.y = mag*sin(dir);
+
             b->directions.push_back(v);
         }
         else

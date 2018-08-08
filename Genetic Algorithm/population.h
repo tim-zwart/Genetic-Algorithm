@@ -14,6 +14,8 @@ public:
     void calculateFitness(box goal);
     void naturalSelection(box goal);
     void outGenResults(ofstream file);
+    void showPos(SDL_Surface* screen);
+    void showBest(SDL_Surface* screen);
 
     // const functions
     bool allDead() const;
@@ -27,6 +29,7 @@ private:
     int gen; // Current generation
     SDL_Surface* const defaultGraphic = loadImage("box.png");
     SDL_Surface* const bestGraphic = loadImage("best_box.png");
+    SDL_Surface* const point = loadImage("point.png");
 };
 
 #endif // POPULATION_H_INCLUDED

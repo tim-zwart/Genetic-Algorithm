@@ -8,7 +8,7 @@ Population::Population(int nDots, vec start)
     dots = new Dot[n];
     for(int i=0;i<n;i++)
     {
-        dots[i].reCreate(400, start, defaultGraphic);
+        dots[i].reCreate(500, start, defaultGraphic);
     }
 }
 
@@ -47,6 +47,19 @@ void Population::calculateFitness(box goal)
     }
 }
 
+void Population::showPos(SDL_Surface* screen)
+{
+    for(int i=0; i<n; i++)
+    {
+        dots[i].showPos(screen);
+    }
+}
+
+void Population::showBest(SDL_Surface* screen)
+{
+    dots[n-1].showPath(screen);
+}
+
 bool Population::allDead() const
 {
     for(int i=0; i<n; i++)
@@ -71,7 +84,7 @@ void Population::naturalSelection(box goal)
 
     for(int i=0;i<n-1;i++)
     {
-        double r = random(fitnessSum);
+        double r = random(0, fitnessSum);
         double num = r;
         int j=0;
         while(num >= 0)

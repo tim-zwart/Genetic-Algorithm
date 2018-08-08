@@ -25,6 +25,8 @@ private:
     Dot mutate(vec start, SDL_Surface* image) const;
     Dot clone(vec start, SDL_Surface* image) const;
     void calculateFitness(box goal, int minGoal);
+    void showPos(SDL_Surface* screen);
+    void showPath(SDL_Surface* screen);
 
     // Dynamic member variables
     vec pos;
@@ -34,6 +36,9 @@ private:
     int instruct_step = 0;
     bool reachedGoal = false;
     bool dead = false;
+
+    vector <vec> positions;
+    bool newPos;
 
     // Generally static member variables
     const Brain* brain;

@@ -49,7 +49,7 @@ int main( int argc, char* args[] )
     goalLoc.bl = convertC(0, 480-goal->h);
     goalLoc.tr = convertC(goal->w, 480);
 #else
-    coord goalL = convertC(320-floor(goal->w/2+1), 480);
+    vec goalL = convertC(320-floor(goal->w/2+1), 480);
     box goalLoc;
     goalLoc.bl = convertC(320-floor(goal->w/2), 480-goal->h);
     goalLoc.tr = convertC(320+floor(goal->w/2), 480);
@@ -59,9 +59,11 @@ int main( int argc, char* args[] )
 
     SDL_FreeSurface(goal);
 
-    Population pop(1000,convertC(320, 3).convert());
+    Population pop(1000, convertC(320, 3));
 
-    while(!quit)
+    int time;
+
+    for(int i=0; !quit; i++)
     {
         while(SDL_PollEvent(&event))
         {
@@ -71,18 +73,23 @@ int main( int argc, char* args[] )
             }
         }
 
-        apply_surface(0, 0, background, screen);
-
         if(pop.allDead())
         {
             pop.naturalSelection(goalLoc);
-            pop.update(screen, goalLoc);
+            apply_surface(0, 0, background, screen);
+            pop.showBest(screen);
+            SDL_Flip(screen);
         }
         else
         {
             pop.update(screen, goalLoc);
+            /*if(i % 50 == 0)
+            {
+                apply_surface(0, 0, background, screen);
+                pop.show(screen);
+                SDL_Flip(screen);
+            }*/
         }
-        SDL_Flip(screen);
     }
 
     SDL_FreeSurface(screen);
