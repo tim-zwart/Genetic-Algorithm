@@ -16,10 +16,49 @@ int main( int argc, char* args[] )
 {
     srand(time(NULL));
 
+    // Create world
+    //World* w = new World(SCREEN_WIDTH, SCREEN_HEIGHT, convertC(0, 0), goalLoc);
+    World* w = new World();
+
+    vector<vector<char>> grid;
+    vector<string> lines;
+    ifstream file;
+
+    file.open("world3.txt");
+    if(!file.is_open())
+    {
+        return -1;
+    }
+
+    for(int i=0;!file.eof();i++)
+    {
+        string s;
+        getline(file, s);
+        cout << s;
+        lines.push_back(s);
+    }
+
+    vector <char> v;
+    grid.resize(lines[0].length());
+
+    for(int y=0;y<(int)lines.size();y++)
+    {
+        for(int x=0;x<(int)lines[0].length();x++)
+        {
+            if(y==0)
+            {
+                grid[x].resize(lines.size());
+            }
+            grid[x][y] = lines[y][x];
+        }
+    }
+
+    w->buildWorld(grid);
+
     // Set up SDL
     bool quit = false;
 
-    SDL_Surface* screen = init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, "Genetic Algorithm");
+    SDL_Surface* screen = init(w->w(), w->h(), SCREEN_BPP, "Genetic Algorithm");
     SDL_Surface* background = NULL;
     SDL_Surface* goal = NULL;
 
@@ -34,34 +73,24 @@ int main( int argc, char* args[] )
     }
 
     background = loadImage("background2.png");
-    goal = loadImage("goal.png");
 
-    apply_surface(0, 0, background, screen);
+
+    //background = SDL_SetVideoMode(w->w(), w->h(), SCREEN_BPP, 0);
+
+    goal = loadImage("goal.png");
 
     if(SDL_Flip(screen) == -1)
     {
         return 1;
     }
-#define tl 0
-#if tl
-    coord goalL = convertC(0, 480);
-    box goalLoc;
-    goalLoc.bl = convertC(0, 480-goal->h);
-    goalLoc.tr = convertC(goal->w, 480);
-#else
-    vec goalL = convertC(320-floor(goal->w/2+1), 480);
-    box goalLoc;
-    goalLoc.bl = convertC(320-floor(goal->w/2), 480-goal->h);
-    goalLoc.tr = convertC(320+floor(goal->w/2), 480);
-#endif
 
-    image(goalL.x, goalL.y, goal, background);
+    w->showObstacles(background);
+
+    apply_surface(0, 0, background, screen);
 
     SDL_FreeSurface(goal);
 
-    Population pop(1000, convertC(320, 3));
-
-    int time;
+    Population pop(10000, w->start());
 
     for(int i=0; !quit; i++)
     {
@@ -75,20 +104,27 @@ int main( int argc, char* args[] )
 
         if(pop.allDead())
         {
-            pop.naturalSelection(goalLoc);
+            w->update();
+
+            apply_surface(0, 0, background, screen);
+            pop.showPos(screen);
+            SDL_Flip(screen);
+
+            pop.naturalSelection(w);
+/*
             apply_surface(0, 0, background, screen);
             pop.showBest(screen);
-            SDL_Flip(screen);
+            SDL_Flip(screen);*/
         }
         else
         {
-            pop.update(screen, goalLoc);
-            /*if(i % 50 == 0)
+            pop.update(w);
+            if(i % 50 == 0)
             {
                 apply_surface(0, 0, background, screen);
-                pop.show(screen);
+                pop.showPos(screen);
                 SDL_Flip(screen);
-            }*/
+            }
         }
     }
 

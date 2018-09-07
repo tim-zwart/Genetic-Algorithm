@@ -12,7 +12,7 @@ class Brain
         static int cBrains;
 
         vector <vec> directions;
-        Brain* mutate() const;
+        Brain* mutate(int lastToMutate) const;
         Brain* clone() const;
 
         Brain();

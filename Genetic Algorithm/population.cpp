@@ -8,28 +8,30 @@ Population::Population(int nDots, vec start)
     dots = new Dot[n];
     for(int i=0;i<n;i++)
     {
-        dots[i].reCreate(500, start, defaultGraphic);
+        dots[i].reCreate(1000, start, defaultGraphic);
     }
 }
 
-void Population::update(SDL_Surface* screen, box goal)
+void Population::update(World *w)
 {
     for(int i=0; i<n; i++)
     {
-        dots[i].update(screen, goal);
+        dots[i].update(w);
     }
 }
 
-void Population::calculateFitness(box goal)
+void Population::calculateFitness(World *w)
 {
     int best=0;
     fitnessSum = 0;
 
     for(int i=0; i<n - (gen==1); i++)
     {
-        dots[i].calculateFitness(goal, 0);
+        dots[i].calculateFitness(w);
         fitnessSum += dots[i].fitness;
-        if(dots[i].fitness > dots[best].fitness)
+        fitDist[i] = fitnessSum;
+
+        if(dots[i].fitness > dots[best].fitness && (!dots[n-1].reachedGoal || dots[i].reachedGoal))
         {
             best = i;
         }
@@ -39,7 +41,7 @@ void Population::calculateFitness(box goal)
     // Output results about past generation
     if(!dots[best].reachedGoal)
     {
-        cout << "Distance from goal: " << pow(dots[best].fitness, -0.5) << endl << endl;
+        cout << "Food gained: " << dots[best].fitness << endl << endl;
     }
     else
     {
@@ -72,7 +74,7 @@ bool Population::allDead() const
     return true;
 }
 
-void Population::naturalSelection(box goal)
+void Population::naturalSelection(World *w)
 {
     cout << "Generation " << gen << endl;
     if(gen==0)
@@ -80,11 +82,15 @@ void Population::naturalSelection(box goal)
         n++;
     }
     newDots = new Dot[n];
-    calculateFitness(goal);
+    fitDist = new double[n];
+
+    calculateFitness(w);
 
     for(int i=0;i<n-1;i++)
     {
+        double element = ((double)n-1)/2;
         double r = random(0, fitnessSum);
+        /*
         double num = r;
         int j=0;
         while(num >= 0)
@@ -92,7 +98,30 @@ void Population::naturalSelection(box goal)
             num -= dots[j].fitness;
             j++;
         }
-        newDots[i] = dots[j-1].mutate(loc, defaultGraphic);
+        */
+
+        for(int j=4;;j*=2)
+        {
+            if(r <= fitDist[int(element)])
+            {
+                if(((int)element) == 0 || r >= fitDist[int(element-1)])
+                {
+                    break;
+                }
+                element -= ((double)n-1)/j;
+            }
+            else
+            {
+                if(((int)element) == n-2)
+                {
+                    element++;
+                    break;
+                }
+                element += ((double)n-1)/j;
+            }
+        }
+
+        newDots[i] = dots[int(element)].mutate(loc, defaultGraphic);
     }
     delete[] dots;
     dots = newDots;

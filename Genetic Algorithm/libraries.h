@@ -11,7 +11,9 @@
 #include <ctime>
 #include <cmath>
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <random>
+#include <algorithm>
 
 #endif // LIBRARIES_H_INCLUDED

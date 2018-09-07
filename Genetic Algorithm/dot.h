@@ -5,6 +5,7 @@
 #include "SDL_Basic.h"
 #include "brain.h"
 #include "framework.h"
+#include "world.h"
 
 class Dot
 {
@@ -21,10 +22,10 @@ private:
     // Member functions
     void reCreate(int nDir, vec start, SDL_Surface* image);
     void move();
-    void update(SDL_Surface* screen, box goal);
+    void update(World *w);
     Dot mutate(vec start, SDL_Surface* image) const;
     Dot clone(vec start, SDL_Surface* image) const;
-    void calculateFitness(box goal, int minGoal);
+    void calculateFitness(World *w);
     void showPos(SDL_Surface* screen);
     void showPath(SDL_Surface* screen);
 

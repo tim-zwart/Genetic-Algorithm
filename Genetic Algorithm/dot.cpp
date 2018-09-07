@@ -47,6 +47,17 @@ Dot::~Dot()
     }
 }
 
+void Dot::reCreate(int nDir, vec start, SDL_Surface* image)
+{
+    fitness = 0;
+    brain = new Brain(nDir);
+    pos = start;
+    v.x = 0;
+    v.y = 0;
+    graphic = image;
+    positions.push_back(pos);
+}
+
 Dot& Dot::operator=(const Dot &d)
 {
     reachedGoal = d.reachedGoal;
@@ -68,23 +79,12 @@ Dot& Dot::operator=(const Dot &d)
     return *this;
 }
 
-void Dot::reCreate(int nDir, vec start, SDL_Surface* image)
-{
-    fitness = 0;
-    brain = new Brain(nDir);
-    pos = start;
-    v.x = 0;
-    v.y = 0;
-    graphic = image;
-    positions.push_back(pos);
-}
-
 void Dot::move()
 {
-    if(instruct_step < (int)brain->directions.size())
+    if(!dead && instruct_step < (int)brain->directions.size())
     {
         // Determine new speed
-        v = v + brain->directions[instruct_step];
+        v += brain->directions[instruct_step];
 
         // Limit speed
         double mag = sqrt(pow(v.x,2) + pow(v.y,2));
@@ -92,7 +92,7 @@ void Dot::move()
         {
             v *= 3/mag;
         }
-
+/*
         if(pos.x >= 200 && pos.x <= 400 && pos.y >= 100 && pos.y <= 200)
         {
             dead = true;
@@ -109,12 +109,14 @@ void Dot::move()
         }
 
         float deathCurve = (1.0f / pow((pos.x-320.0f) / 1000.0f,2)) + 160.0f;
+
         if(pos.y > deathCurve)
         {
             dead = true;
         }
+*/
+        pos += v;
 
-        pos = pos + v;
         instruct_step++;
     }
     else
@@ -123,13 +125,9 @@ void Dot::move()
     }
 }
 
-void Dot::update(SDL_Surface* screen, box goal)
+void Dot::update(World *w)
 {
     if(brain == NULL)
-    {
-        return;
-    }
-    if(reachedGoal)
     {
         return;
     }
@@ -140,55 +138,61 @@ void Dot::update(SDL_Surface* screen, box goal)
 
     move();
 
-    if(pos.x > screen->w-graphic->w/2-1 || pos.x < graphic->w/2 || pos.y > screen->h-graphic->h/2-1 || pos.y < graphic->h/2+1)
+    if(newPos)
+    {
+        positions.push_back(pos);
+    }
+
+    if(w->collided(pos))
+    {
+        dead=true;
+        return;
+    }
+
+    if(pos.x > w->w()-graphic->w/2-1 || pos.x < graphic->w/2 || pos.y > w->h()-graphic->h/2-1 || pos.y < graphic->h/2+1)
     {
         dead = true;
     }
 
     if(!dead)
     {
+        fitness += w->eat(pos.x, pos.y);
+
+        box goal = w->goal();
+
         bool left = pos.x - floor(graphic->w/2) >= goal.bl.x;
         bool right = pos.x + floor(graphic->w/2) <= goal.tr.x;
         bool bottom = pos.y - floor(graphic->h/2) >= goal.bl.y;
-        reachedGoal =  left && right && bottom;
+        bool top = pos.y + floor(graphic->h/2) <= goal.tr.y;
+        reachedGoal =  left && right && bottom && top;
         dead = reachedGoal;
     }
 
     if(dead)
     {
-        pos.x = std::min((double)screen->w-graphic->w/2-1, pos.x);
-        pos.y = std::min((double)screen->h-graphic->h/2-1, pos.y);
+        pos.x = std::min((double)w->w()-graphic->w/2-1, pos.x);
+        pos.y = std::min((double)w->h()-graphic->h/2-1, pos.y);
 
         pos.x = std::max((double)graphic->w/2, pos.x);
         pos.y = std::max((double)graphic->h/2+1, pos.y);
     }
-
-    if(newPos)
-    {
-        positions.push_back(pos);
-    }
 }
 
-void Dot::calculateFitness(box goal, int minFit)
+void Dot::calculateFitness(World *w)
 {
-    vec g = convertC((goal.bl.x+goal.tr.x)/2,(goal.bl.y+goal.tr.y)/2);
-    //coord p = pos.convert();
-    double distance = sqrt(pow(g.x-pos.x, 2) + pow(g.y-pos.y, 2));
-    //double distance = g.y-pos.y;
-    if(!reachedGoal)
+    if(reachedGoal)
     {
-        fitness = 1/pow(distance, 2) + (brain->directions.size() - instruct_step)/10000;
-    }
-    else
-    {
-        fitness = pow(brain->directions.size() - instruct_step, 2) + 1/distance;
+        box goal = w->goal();
+        vec g = convertC((goal.bl.x+goal.tr.x)/2,(goal.bl.y+goal.tr.y)/2);
+        double distance = sqrt(pow(g.x-pos.x, 2) + pow(g.y-pos.y, 2));
+        fitness = pow(brain->directions.size() - instruct_step, 2) + pow(1/distance, 0.1);
     }
 }
 
 Dot Dot::mutate(vec start, SDL_Surface* image) const
 {
     Dot baby(start, image);
-    Brain* b = brain->mutate();
+    Brain* b = brain->mutate(instruct_step);
     baby.brain = b;
     return baby;
 }

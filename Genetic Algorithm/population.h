@@ -10,9 +10,9 @@ class Population
 public:
     // Non const functions
     Population(int nInstruct, vec start);
-    void update(SDL_Surface* screen, box goal);
-    void calculateFitness(box goal);
-    void naturalSelection(box goal);
+    void update(World *w);
+    void calculateFitness(World *w);
+    void naturalSelection(World *w);
     void outGenResults(ofstream file);
     void showPos(SDL_Surface* screen);
     void showBest(SDL_Surface* screen);
@@ -25,6 +25,7 @@ private:
     int n; // Number of dots
     Dot* dots;
     Dot* newDots;
+    double* fitDist;
     double fitnessSum; // Total fitness of all dots
     int gen; // Current generation
     SDL_Surface* const defaultGraphic = loadImage("box.png");
